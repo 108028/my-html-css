@@ -1,0 +1,56 @@
+/* 全局樣式 */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    /* 字型 */
+    font-family: 'Times New Roman', serif;
+}
+
+
+body {
+        background-color: white; /* 初始背景色 */
+        transition: background-color 0.3s ease; /* 背景色變化動畫效果 */
+    }
+/* 主內容樣式 */
+div {
+    padding: 20px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin: 0;
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+/* 工作網格樣式 */
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.work-item {
+    text-align: center;
+}
+
+
+
+
+
+/*
+這後面都是註解
+widtw 寬
+height高
+ px   固定
+ %    百分百
+ auto 自動
+ 
+ 置中
+ top: 25%;  上下
+ left: 50%; 左右
+ translate: translate(-50%,-50%);

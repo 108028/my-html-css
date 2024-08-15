@@ -1,0 +1,13 @@
+/* 圖片 */
+img {
+    width: 150px;
+     left: 50%;
+    translate: translate(0%,-50%);
+    border-radius: 10px;
+}
+.img {
+    width: 32px; /* 圖標寬度 */
+    height: 32px; /* 圖標高度 */
+    vertical-align: middle; /* 垂直對齊 */
+    margin-right: 8px; /* 圖標和文字間距 */
+}

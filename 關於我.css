@@ -1,0 +1,31 @@
+/* 關於我 */
+.about-me {
+    background-color: #DFDFDF;
+    width: auto;
+    height: 84px;
+    }
+    .about-me-dc, .about-me-line, .about-me-a {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid black;
+        border-radius: 100px;
+        cursor: pointer;
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .about-me-dc {
+        background-image: linear-gradient(to right, #0015FF, #818BFF, #3C4CFF, #818BFF, #0015FF);
+        background-color: #00299A;
+        color: #FFFFFF;
+    }
+    
+    .about-me-line {
+        background-image: linear-gradient(to right, #00FF22, #6EFF32, #00FF22, #6EFF82, #00FF22);
+        background-color: #009A15;
+        color: #000000;
+    }
+    .about-me-dc:hover,.about-me-line:hover,.about-me-a {
+        color: #42445A; /* 按钮悬停时的文字颜色 */
+    }
+    
