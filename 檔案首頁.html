@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>檔案管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .button-container button {
+            margin-right: 10px;
+            padding: 8px 12px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .section {
+            margin-top: 40px;
+        }
+
+        .section h2 {
+            margin-bottom: 10px;
+        }
+
+        .log-container {
+            margin-bottom: 20px;
+        }
+
+        .collaborators-container {
+            margin-bottom: 20px;
+        }
+
+        .collaborators-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .collaborators-container a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .submit-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>檔案管理</h1>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜尋檔案...">
+        </div>
+
+        <div class="button-container">
+            <!-- 這裡如果需要按鈕可以添加 -->
+        </div>
+        <table id="fileTable">
+            <thead>
+                <tr>
+                    <th>名稱<button onclick="sortBy('name')">名稱排序</button></th>
+                    <th>副檔名<button onclick="sortBy('extension')">副檔名排序</button></th>
+                    <th>類別<button onclick="sortBy('category')">類別排序</button></th>
+                    <th>用途</th>
+                    <th>修改日期<button onclick="sortBy('date')">修改日期排序</button></th>
+                    <th>複製</th>
+                    <th>下載</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 檔案列會動態插入在這裡 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="log-container">
+            <h2>Git 儲存庫日誌</h2>
+            <ul id="logList">
+                <!-- Git 日誌會動態插入在這裡 -->
+            </ul>
+        </div>
+
+        <div class="collaborators-container">
+            <h2>合作者</h2>
+            <ul id="collaboratorList">
+                <!-- 合作者列表會動態插入在這裡 -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>成為合作者</h1>
+        <form id="collaboratorForm">
+            <label for="name">姓名</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">電子郵件</label>
+            <input type="email" id="email" name="email" required>
+
+            <button type="submit" class="submit-button">發送申請</button>
+        </form>
+    </div>
+
+    <script>
+        // 示例檔案數據
+        const files = [
+            { name: '按鈕', extension: '.css', category: '超文本美化', use: '美化按鈕', date: '2024.8.17', path: '按鈕.css' },
+            { name: '圖片', extension: '.css', category: '超文本美化', use: '美化圖片', date: '2024.8.17', path: '圖片.css' },
+            { name: '導航列', extension: '.css', category: '超文本美化', use: '用於導航列', date: '2024.8.17', path: '導航列.css' },
+            { name: '關於我', extension: '.css', category: '超文本美化', use: '關於我（單獨的按鈕樣式）', date: '2024.8.17', path: '關於.css' },
+            { name: 'style', extension: '.css', category: '超文本美化', use: '全局樣式', date: '2024.8.17', path: '.tyle.css' },
+            // 可以在這裡添加更多檔案數據
+        ];
+
+        function renderTable(filteredFiles = files) {
+            const tbody = document.querySelector('#fileTable tbody');
+            tbody.innerHTML = ''; // 清空現有表格行
+
+            filteredFiles.forEach(file => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${file.name}</td>
+                    <td>${file.extension}</td>
+                    <td>${file.category}</td>
+                    <td>${file.use}</td>
+                    <td>${file.date}</td>
+                    <td><button onclick="copyToClipboard('${file.path}')">複製</button></td>
+                    <td><button onclick="downloadFile('${file.path}')">下載</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sortBy(attribute) {
+            files.sort((a, b) => {
+                if (attribute === 'date') {
+                    return new Date(a[attribute]) - new Date(b[attribute]);
+                }
+                if (a[attribute] < b[attribute]) return -1;
+                if (a[attribute] > b[attribute]) return 1;
+                return 0;
+            });
+            renderTable();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('路徑已複製到剪貼簿');
+            });
+        }
+
+        function downloadFile(path) {
+            window.location.href = path;
+        }
+
+        async function fetchLogs() {
+            try {
+                const response = await fetch('/api/logs');
+                if (!response.ok) {
+                    throw new Error('網路回應不好');
+                }
+                const logs = await response.json();
+                const logList = document.getElementById('logList');
+                logList.innerHTML = ''; // 清空現有日誌
+
+                logs.forEach(log => {
+                    const li = document.createElement('li');
+                    li.textContent = `${log.date} - ${log.commit}: ${log.message}`;
+                    logList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Failed to fetch logs:', error);
+            }
+        }
+
+        function renderCollaborators() {
+            const collaboratorList = document.getElementById('collaboratorList');
+            collaboratorList.innerHTML = ''; // 清空現有合作者
+
+            // 示例合作者數據
+            const collaborators = [
+                { name: '琨旴', profile: '琨旴.html' },
+                // 可以在這裡添加更多合作者數據
+            ];
+
+            collaborators.forEach(collaborator => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = collaborator.profile;
+                link.textContent = collaborator.name;
+                li.appendChild(link);
+                collaboratorList.appendChild(li);
+            });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault(); // 防止表單默認提交行為
+
+            // 獲取表單數據
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // 構建郵件鏈接
+            const subject = encodeURIComponent('申請成為合作者');
+            const body = encodeURIComponent(`你好，\n\n我叫 ${name}，希望能夠成為您的合作者。\n\n我的電子郵件是 ${email}。\n\n謝謝！`);
+            const mailtoLink = `mailto:kx108028@gmail.com?subject=${subject}&body=${body}`;
+
+            // 跳轉到預設的郵件應用
+            var mailtoUrl = mailtoLink;
+        }
+
+        // 初始渲染
+        renderTable();
+        fetchLogs();
+        renderCollaborators();
+
+        // 表單提交事件
+        document.getElementById('collaboratorForm').addEventListener('submit', handleFormSubmit);
+
+        // 搜尋功能
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredFiles = files.filter(file => 
+                file.name.toLowerCase().includes(query) || 
+                file.extension.toLowerCase().includes(query) ||
+                file.category.toLowerCase().includes(query) ||
+                file.date.toLowerCase().includes(query)
+            );
+            renderTable(filteredFiles);
+        });
+    </script>
+</body>
+</html>

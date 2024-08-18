@@ -1,0 +1,79 @@
+＠目錄
+----------目錄----------
+用查找＠＋目錄文字查找
+１初始
+２狀態
+３日誌
+
+
+
+
+git clone https://github.com/108028/my-html.git
+載入專案
+git checkout -b Jerry/VScode
+    切換分支  建立並切換 新分之名稱
+git push -u origin main
+    推送 建立關聯性 遠端名稱 本地名稱
+git push
+    同步（至GitHub）
+
+
+
+查看版本
+git --version
+
+設定名字
+git config --global user.name ""
+
+設定email
+git config --global user.email ""
+
+＠初始
+
+初始化
+git init
+file ==> .git
+
+清空之前輸入的指令
+clear
+
+＠狀態
+
+檢查狀態
+git status
+    未追蹤（未在更新名單）
+    將不要追蹤的文件名稱加入
+    file ==> .gitignore
+    已追蹤（加入更新名單）
+        git add 檔案名稱.副檔名
+        *.[檔案類型] 將所有這個檔案類型加入追蹤名單。
+                    可以使用空格代表頓號
+        如：[git add 1.txt *.png 2.html]
+    已暫存（更新中）
+        更新指令
+        #刪除檔案也要更新
+        git commit -m "[快照更新內容]"
+        git commit -m "劉琨旴（jerry108028）連接至GitHub"
+        git commit -m "重新投放廣告（頁尾）"
+        同步GitHub的內容
+        git push
+        推送至GitHub
+        git push -u origin main
+    已提交（更新完成）
+
+＠日誌
+
+日誌
+git log
+    簡化
+    git log --oneline
+
+比較現在與之前的版本
+git diff [版本編號]
+    確定還原
+    git checkout [版本編號] -- [檔案名稱]
+    #本動作需要再次提交（更新）
+    還原並刪除紀錄
+    #操作不可逆
+    git reset --hard [版本編號]
+
