@@ -178,7 +178,7 @@
                     <td>${file.use}</td>
                     <td>${file.date}</td>
                     <td><button onclick="copyToClipboard('https://108028.github.io/my-html-css/${file.path}')">複製</button></td>
-                    <td><button onclick="downloadFile('${file.path}')">下載</button></td>
+                    <td><button onclick="downloadFile(' https://108028.github.io/my-html-css/${file.path}')">下載</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -203,7 +203,7 @@
         }
 
         function downloadFile(path) {
-            window.location.href = path;
+            link.download = path;
         }
 
         async function fetchLogs() {
@@ -259,7 +259,7 @@
             const mailtoLink = `mailto:kx108028@gmail.com?subject=${subject}&body=${body}`;
 
             // 跳轉到預設的郵件應用
-            var mailtoUrl = mailtoLink;
+            window.location.href = mailtoLink;
         }
 
         // 初始渲染
