@@ -157,11 +157,11 @@
     <script>
         // 示例檔案數據
         const files = [
-            { name: '按鈕', extension: '.css', category: '超文本美化', use: '美化按鈕', date: '2024.8.17', path: '按鈕.css' },
-            { name: '圖片', extension: '.css', category: '超文本美化', use: '美化圖片', date: '2024.8.17', path: '圖片.css' },
+            { name: '按鈕', extension: '.css', category: '超文本美化', use: '美化按鈕', date: '2024.8.17' },
+            { name: '圖片', extension: '.css', category: '超文本美化', use: '美化圖片', date: '2024.8.17' },
             { name: '導航列', extension: '.css', category: '超文本美化', use: '用於導航列', date: '2024.8.17', path: '導航列.css' },
-            { name: '關於我', extension: '.css', category: '超文本美化', use: '關於我（單獨的按鈕樣式）', date: '2024.8.17', path: '關於.css' },
-            { name: 'style', extension: '.css', category: '超文本美化', use: '全局樣式', date: '2024.8.17', path: '.tyle.css' },
+            { name: '關於我', extension: '.css', category: '超文本美化', use: '關於我（單獨的按鈕樣式）', date: '2024.8.17' },
+            { name: 'style', extension: '.css', category: '超文本美化', use: '全局樣式', date: '2024.8.17' },
             // 可以在這裡添加更多檔案數據
         ];
 
@@ -178,7 +178,7 @@
                     <td>${file.use}</td>
                     <td>${file.date}</td>
                     <td><button onclick="copyToClipboard('https://108028.github.io/my-html-css/${file.path}')">複製</button></td>
-                    <td><button onclick="downloadFile('https://108028.github.io/my-html-css/${file.path}')">下載</button></td>
+                    <td><button onclick="downloadFile('https://108028.github.io/my-html-css/${file.name}${extension}')">下載</button></td>
                 `;
                 tbody.appendChild(tr);
             });

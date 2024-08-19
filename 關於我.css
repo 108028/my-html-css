@@ -1,4 +1,8 @@
 /* 關於我 */
+.about {
+    width: 90%;
+    height: auto;
+}
 .about-me {
     background-color: #DFDFDF;
     width: auto;
