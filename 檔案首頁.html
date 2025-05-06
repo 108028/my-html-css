@@ -154,7 +154,7 @@
         </form>
     </div>
 
-    <script>
+    <!-- script>
         // 示例檔案數據
         const files = [
             { name: '按鈕', extension: '.css', category: '超文本美化', use: '美化按鈕', date: '2024.8.17' },
@@ -301,6 +301,139 @@
             );
             renderTable(filteredFiles);
         });
-    </script>
+</script --><script>
+    <script>
+    const files = [
+        { name: '按鈕', extension: '.css', category: '超文本美化', use: '美化按鈕', date: '2024.8.17', path: '按鈕.css' },
+        { name: '圖片', extension: '.css', category: '超文本美化', use: '美化圖片', date: '2024.8.17', path: '圖片.css' },
+        { name: '導航列', extension: '.css', category: '超文本美化', use: '用於導航列', date: '2024.8.17', path: '導航列.css' },
+        { name: '關於我', extension: '.css', category: '超文本美化', use: '關於我（單獨的按鈕樣式）', date: '2024.8.17', path: '關於我.css' },
+        { name: 'style', extension: '.css', category: '超文本美化', use: '全局樣式', date: '2024.8.17', path: 'style.css' },
+    ];
+
+    function renderTable(filteredFiles = files) {
+        const tbody = document.querySelector('#fileTable tbody');
+        tbody.innerHTML = '';
+
+        filteredFiles.forEach(file => {
+            const filePath = file.path || `${file.name}${file.extension}`;
+            const fullUrl = `https://108028.github.io/my-html-css/${filePath}`;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${file.name}</td>
+                <td>${file.extension}</td>
+                <td>${file.category}</td>
+                <td>${file.use}</td>
+                <td>${file.date}</td>
+                <td><button onclick="copyToClipboard('${fullUrl}')">複製</button></td>
+                <td><button onclick="downloadFile('${fullUrl}')">下載</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function sortBy(attribute) {
+        files.sort((a, b) => {
+            if (attribute === 'date') {
+                return new Date(a[attribute]) - new Date(b[attribute]);
+            }
+            if (a[attribute] < b[attribute]) return -1;
+            if (a[attribute] > b[attribute]) return 1;
+            return 0;
+        });
+        renderTable();
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('路徑已複製到剪貼簿');
+        });
+    }
+
+    function downloadFile(path) {
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(xhr.response);
+            a.download = path.split("/").pop();
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        };
+        xhr.open('GET', path);
+        xhr.send();
+    }
+
+    async function fetchLogs() {
+        try {
+            const response = await fetch('/api/logs');
+            if (!response.ok) {
+                throw new Error('網路回應不好');
+            }
+            const logs = await response.json();
+            const logList = document.getElementById('logList');
+            logList.innerHTML = '';
+            logs.forEach(log => {
+                const li = document.createElement('li');
+                li.textContent = `${log.date} - ${log.commit}: ${log.message}`;
+                logList.appendChild(li);
+            });
+        } catch (error) {
+            const logList = document.getElementById('logList');
+            logList.innerHTML = '<li>無法載入 Git 日誌</li>';
+            console.error('Failed to fetch logs:', error);
+        }
+    }
+
+    function renderCollaborators() {
+        const collaboratorList = document.getElementById('collaboratorList');
+        collaboratorList.innerHTML = '';
+        const collaborators = [
+            { name: '琨旴', profile: '琨旴.html' },
+        ];
+        collaborators.forEach(collaborator => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = collaborator.profile;
+            link.textContent = collaborator.name;
+            li.appendChild(link);
+            collaboratorList.appendChild(li);
+        });
+    }
+
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const subject = encodeURIComponent('申請成為合作者');
+        const body = encodeURIComponent(`你好，\n\n我叫 ${name}，希望能夠成為您的合作者。\n\n我的電子郵件是 ${email}。\n\n謝謝！`);
+        const mailtoLink = `mailto:kx108028@gmail.com?subject=${subject}&body=${body}`;
+        window.location.href = mailtoLink;
+    }
+
+    document.getElementById('collaboratorForm').addEventListener('submit', handleFormSubmit);
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const filteredFiles = files.filter(file =>
+            file.name.toLowerCase().includes(query) ||
+            file.extension.toLowerCase().includes(query) ||
+            file.category.toLowerCase().includes(query) ||
+            file.use.toLowerCase().includes(query) ||
+            file.date.toLowerCase().includes(query)
+        );
+        renderTable(filteredFiles);
+    });
+
+    // 初始執行
+    renderTable();
+    fetchLogs();
+    renderCollaborators();
+</script>
+
+</script>
 </body>
 </html>
